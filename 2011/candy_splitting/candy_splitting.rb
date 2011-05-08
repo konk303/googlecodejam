@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
 
+# this took too many time, answer is on
+# http://code.google.com/codejam/contest/dashboard?c=975485#s=a&a=2
+
+
 class CandySplitting
   def initialize(candies)
     @candies = candies
