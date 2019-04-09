@@ -37,6 +37,11 @@ class Solve
 
   private
 
+  def create_tree(array, divide_by)
+    per_one = array.size / (divide_by + ((array.size % divide_by).nonzero? ? 1 : 0))
+    array.eac_slice(per_one)
+  end
+
   def plan
     @challenging = workers.each_slice(slice_size).with_index.map do |group, i|
       Array.new(group.size) { i.odd? ? '1' : '0' }
@@ -47,12 +52,6 @@ class Solve
 
   end
 
-  def send!
-    @logger.debug ['send', challenging]
-    puts challenging.flatten.join('')
-    challenged += 1
-  end
-
   def finish!
     @logger.debug ['send', brokens]
     puts brokens.join(' ')
@@ -60,13 +59,38 @@ class Solve
     @logger.debug ['receive', response]
  end
 
-  def receive!
-    @returned = gets.split(//)
-    @logger.debug ['receive', returned]
-  end
-
   def finished?
     brokens.size == b
+  end
+
+  class Communicator
+    attr_reader :limit, :logger
+
+    def initialize(limit)
+      @limit = limit
+      @logger = Logger.new('log.txt')
+      @count = 0
+    end
+
+    def communicate(array)
+      send!(array)
+    end
+
+    private
+
+    def send!(string)
+      raise 'limit reached' if @count == limit
+      logger.debug ['send', string]
+      puts array.flatten.join('')
+      @count += 1
+    end
+
+    def receive!
+      gets.tap do |returned|
+        logger.debug ['receive', returned]
+        raise '-1 returned' if returned == '-1'
+      end
+    end
   end
 end
 
