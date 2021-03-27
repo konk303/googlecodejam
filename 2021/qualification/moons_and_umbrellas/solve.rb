@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-require 'pry'
 
 class Solver
   attr_reader :cj, :jc, :row

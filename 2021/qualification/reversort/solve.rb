@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-require 'pry'
 
 class Solve
   attr_accessor :result
